@@ -19,5 +19,4 @@ def main(path: str, verbose: bool = False):
 	for image in images:
 		image.add_location(lat=location['lat'], long=location['long'])
 
-if __name__ == '__main__':
-	typer.run(main)
+typer.run(main)
