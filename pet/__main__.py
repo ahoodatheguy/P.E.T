@@ -9,12 +9,15 @@ def main(path: str, verbose: bool = False):
 	images = []
 	for file in file_paths:
 		images.append(Image(path=file))
-	image: Image
 
 	addr = typer.prompt('Address')
 	api = API()
 	location = api.geocode(addr)
 	print_json(data=location)
+
+	image: Image
+	for image in images:
+		image.add_location(lat=location['lat'], long=location['long'])
 
 if __name__ == '__main__':
 	typer.run(main)

@@ -45,3 +45,6 @@ class Image:
 			'long': self.exifdata[0]['Composite:GPSLongitude']
 		}
 		return data
+	
+	def add_location(self, lat:float, long:float):
+		self.exiftool.execute_json('-GPSLatitudeRef=N', '-GPSLongitudeRef=W', f'-GPSLatitude={lat}', f'-GPSLongitude={long}', self.path)
