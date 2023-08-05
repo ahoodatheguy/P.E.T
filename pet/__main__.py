@@ -1,16 +1,20 @@
 import typer
 from rich import print_json
-from .classmodule import PET
+from .classmodule import API, Image
 from glob import glob
 
 def main(path: str, verbose: bool = False):
-	files = glob(path)
+	# Support unix wildcards (e.g ./*.jpg)
+	file_paths = glob(path)
+	images = []
+	for file in file_paths:
+		images.append(Image(path=file))
+	image: Image
 
-	print(files)
 	addr = typer.prompt('Address')
-	pet = PET(path=path)
-	print_json(data=pet.geocode(addr))
-
+	api = API()
+	location = api.geocode(addr)
+	print_json(data=location)
 
 if __name__ == '__main__':
 	typer.run(main)
