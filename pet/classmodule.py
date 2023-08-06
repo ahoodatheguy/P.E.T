@@ -15,7 +15,7 @@ class API():
 		return selection
 	
 	def choose_location(self):
-		"""Use fzf to select address in case of multiple results from self.geocode"""
+		"""Use fzf to select address in case of multiple results from self.geocode."""
 		locations = []
 		for i in self.data:
 			locations.append({'name': i['display_name'], 'lat': i['lat'], 'long': i['lon']})
@@ -47,4 +47,4 @@ class Image:
 		return data
 	
 	def add_location(self, lat:float, long:float):
-		self.exiftool.execute('-GPSLatitudeRef=N', '-GPSLongitudeRef=W', f'-GPSLatitude={lat}', f'-GPSLongitude={long}', '-overwrite-original', self.path)
+		self.exiftool.execute('-GPSLatitudeRef=N', '-GPSLongitudeRef=W', f'-GPSLatitude={lat}', f'-GPSLongitude={long}', '-overwrite_original', self.path)
