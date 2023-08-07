@@ -17,7 +17,7 @@ def main(path: str, verbose: bool = False):
 		if image.gps_coords is False:
 			print(f'[blue]{image.path}[/blue] has no location.')
 		else:
-			print(f'Current location for [blue]{image.path}[/blue]: {image.gps_coords}')
+			print(f'Current location for [blue]{image.path}[/blue]: {image.gps_coords["lat"]}, {image.gps_coords["long"]}')
 
 	addr = typer.prompt('Address')
 	api = API()
@@ -26,9 +26,9 @@ def main(path: str, verbose: bool = False):
 
 	image: Image
 	for image in track(images, description='Processing...'):
-		print(f'Setting {image.path} location')
+		print(f'Setting {image.path} location to {location["lat"]}, {location["long"]}')
 		image.add_location(lat=location['lat'], long=location['long'])
-		print(f'Set {image.path} location')
+		print(f'Set {image.path} location to {image.gps_coords["lat"]}, {image.gps_coords["long"]}')
 
 
 typer.run(main)
