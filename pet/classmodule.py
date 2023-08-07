@@ -41,9 +41,10 @@ class Image:
 	@property
 	def gps_coords(self):
 		try:
+			exifdata = self.exiftool.execute_json('-k', self.path)
 			data = {
-				'lat': self.exifdata[0]['Composite:GPSLatitude'],
-				'long': self.exifdata[0]['Composite:GPSLongitude']
+				'lat': exifdata[0]['Composite:GPSLatitude'],
+				'long': exifdata[0]['Composite:GPSLongitude']
 			}
 			return data
 		# If the image doesn't have a location, return false. __main__ will handle this.
