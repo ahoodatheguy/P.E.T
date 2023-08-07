@@ -1,5 +1,5 @@
 import typer
-from rich import print_json
+from rich import print_json, print
 from rich.progress import track
 from .classmodule import API, Image
 from glob import glob
@@ -11,6 +11,13 @@ def main(path: str, verbose: bool = False):
 	images = []
 	for file in file_paths:
 		images.append(Image(path=file))
+
+	image: Image
+	for image in images:
+		if image.gps_coords is False:
+			print(f'[blue]{image.path}[/blue] has no location.')
+		else:
+			print(f'Current location for [blue]{image.path}[/blue]: {image.gps_coords}')
 
 	addr = typer.prompt('Address')
 	api = API()

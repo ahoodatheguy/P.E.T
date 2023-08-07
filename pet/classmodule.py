@@ -40,11 +40,15 @@ class Image:
 
 	@property
 	def gps_coords(self):
-		data = {
-			'lat': self.exifdata[0]['Composite:GPSLatitude'],
-			'long': self.exifdata[0]['Composite:GPSLongitude']
-		}
-		return data
+		try:
+			data = {
+				'lat': self.exifdata[0]['Composite:GPSLatitude'],
+				'long': self.exifdata[0]['Composite:GPSLongitude']
+			}
+			return data
+		# If the image doesn't have a location, return false. __main__ will handle this.
+		except KeyError:
+			return False
 	
 	def add_location(self, lat:float, long:float):
 		self.exiftool.execute('-GPSLatitudeRef=N', '-GPSLongitudeRef=W', f'-GPSLatitude={lat}', f'-GPSLongitude={long}', '-overwrite_original', self.path)
