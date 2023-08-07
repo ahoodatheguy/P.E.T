@@ -28,3 +28,20 @@ def add_location(path: str):
 		print(f'Setting {image.path} location to {location["lat"]}, {location["long"]}')
 		image.add_location(lat=location['lat'], long=location['long'])
 		print(f'Set {image.path} location to {image.gps_coords["lat"]}, {image.gps_coords["long"]}')
+
+@app.command('rm')
+def remove_location(path: str):
+	images = parse_path(path)
+	image: Image
+	for image in images:
+		if image.gps_coords is False:
+			print(f'[blue]{image.path}[/blue] has no location.')
+		else:
+			print(f'Current location for [blue]{image.path}[/blue]: {image.gps_coords["lat"]}, {image.gps_coords["long"]}')
+		
+	delete = typer.confirm('Are you sure you want to delete GPS data? (this cannot be undone!)', abort=True)
+	if delete:
+		image: Image
+		for image in track(images, description='Processing...'):
+			print(f'Deleting location from {image.path}')
+			image.rm_location()

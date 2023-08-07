@@ -53,3 +53,6 @@ class Image:
 	
 	def add_location(self, lat:float, long:float):
 		self.exiftool.execute('-GPSLatitudeRef=N', '-GPSLongitudeRef=W', f'-GPSLatitude={lat}', f'-GPSLongitude={long}', '-overwrite_original', self.path)
+	
+	def rm_location(self):
+		self.exiftool.execute('-gps:all=', '-overwrite_original', self.path)
