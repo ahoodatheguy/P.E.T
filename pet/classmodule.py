@@ -1,11 +1,11 @@
 import requests
 from pyfzf.pyfzf import FzfPrompt
 from exiftool import ExifToolHelper
-from rich.pretty import pprint
 
 class API():
-	def __init__(self):
+	def __init__(self, fzf="fzf"):
 		pass
+		self.fzf = fzf
 	
 	def geocode(self, addr: str) -> dict:
 		"""Convert address to coordinates."""
@@ -22,7 +22,7 @@ class API():
 		location_names = [location['name'] for location in locations]
 
 		# Select location with fuzzy finding
-		fzf = FzfPrompt('fzf')
+		fzf = FzfPrompt(self.fzf)
 		selection = ' '.join(fzf.prompt(location_names, '-i --border=rounded --cycle --reverse'))
 		
 		for location in locations:
@@ -51,7 +51,7 @@ class Image:
 		except KeyError:
 			return False
 	
-	def add_location(self, lat:float, long:float):
+	def add_location(self, lat: float, long: float):
 		self.exiftool.execute('-GPSLatitudeRef=N', '-GPSLongitudeRef=W', f'-GPSLatitude={lat}', f'-GPSLongitude={long}', '-overwrite_original', self.path)
 	
 	def rm_location(self):

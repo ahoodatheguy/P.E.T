@@ -7,10 +7,14 @@ from rich.progress import track
 
 app = typer.Typer()
 
+@app.callback()
+def callback():
+	"""Change GPS data using named locations and addresses"""
+
 @app.command('add')
-def add_location(path: str):
+def add_location(path: str, fzf_path: str = typer.Option(help='Path for fzf executable', default='fzf')):
+	"""Add location to images."""
 	images = parse_path(path=path)
-	"""Add location to list of images."""
 	image: Image
 	for image in images:
 		if image.gps_coords is False:
@@ -19,7 +23,7 @@ def add_location(path: str):
 			print(f'Current location for [blue]{image.path}[/blue]: {image.gps_coords["lat"]}, {image.gps_coords["long"]}')
 
 	addr = typer.prompt('Address')
-	api = API()
+	api = API(fzf=fzf_path)
 	location = api.geocode(addr)
 	print_json(data=location)
 
@@ -31,6 +35,7 @@ def add_location(path: str):
 
 @app.command('rm')
 def remove_location(path: str):
+	"""Remove location from images."""
 	images = parse_path(path)
 	image: Image
 	for image in images:
