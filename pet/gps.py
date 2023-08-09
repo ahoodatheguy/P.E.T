@@ -12,9 +12,11 @@ def callback():
 	"""Change GPS data using named locations and addresses"""
 
 @app.command('add')
-def add_location(path: str, fzf_path: str = typer.Option(help='Path for fzf executable', default='fzf')):
+def add_location(path: str,
+					fzf_path: str = typer.Option(help='Path for fzf executable', default='fzf'),
+					exiftool_path: str = typer.Option(help='Path for exiftool executable', default='exiftool')):
 	"""Add location to images."""
-	images = parse_path(path=path)
+	images = parse_path(path=path, exiftool_path=exiftool_path)
 	image: Image
 	for image in images:
 		if image.gps_coords is False:
@@ -34,7 +36,7 @@ def add_location(path: str, fzf_path: str = typer.Option(help='Path for fzf exec
 		print(f'Set {image.path} location to {image.gps_coords["lat"]}, {image.gps_coords["long"]}')
 
 @app.command('rm')
-def remove_location(path: str):
+def remove_location(path: str, exiftool_path: str = typer.Option(help='Path for exiftool executable', default='exiftool')):
 	"""Remove location from images."""
 	images = parse_path(path)
 	image: Image

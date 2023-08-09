@@ -33,9 +33,10 @@ class API():
 		return {'name': selection, 'lat': lat, 'long': long}
 
 class Image:
-	def __init__(self, path: str):
+	def __init__(self, path: str, exiftool_path='exiftool'):
 		self.path = path
 		self.exiftool = ExifToolHelper()
+		self.exiftool.executable = exiftool_path
 		self.exifdata = self.exiftool.execute_json('-k', self.path)
 
 	@property
