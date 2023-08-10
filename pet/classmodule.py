@@ -51,6 +51,10 @@ class Image:
 		# If the image doesn't have a location, return false. __main__ will handle this.
 		except KeyError:
 			return False
+
+	def update_rating(self, rating:int):
+		rating_data = self.exiftool.execute(f'-rating={rating}', '-overwrite_original', self.path)
+		return rating_data
 	
 	def add_location(self, lat: float, long: float):
 		self.exiftool.execute('-GPSLatitudeRef=N', '-GPSLongitudeRef=W', f'-GPSLatitude={lat}', f'-GPSLongitude={long}', '-overwrite_original', self.path)
