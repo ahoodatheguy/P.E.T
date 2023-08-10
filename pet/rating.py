@@ -1,6 +1,7 @@
 import typer
 from .funcmodule import parse_path
 from rich.prompt import Prompt
+from rich.progress import track
 
 app = typer.Typer()
 
@@ -13,6 +14,6 @@ def main(path: str, ctx: typer.Context, exiftool_path: str = typer.Option(help='
 	# Code runs if command is run with no subcommands (e.g pet rating {{PATH}})
 	if ctx.invoked_subcommand is None:
 		images = parse_path(path)
-		for image in images:
-			rating = Prompt.ask('Rating :star:')
+		rating = Prompt.ask('Rating :star:')
+		for image in track(images, description='Processing...'):
 			image.update_rating(rating)
